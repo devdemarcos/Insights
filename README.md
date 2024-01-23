@@ -1,21 +1,22 @@
 # Insights
 ## Análise de dados associado ao operacional de engenharia
 import pandas as pd
+import matplotlib.pyplot as plt
 import win32com.client as win32
 
 # importar a base de dados
-plano = pd.read_excel('arquivo.xlsx')
+ensaio_laboratorio = pd.read_excel('arquivo.xlsx')
 
 # visualizar a base de dados
 pd.set_option('display.max_columns', None)
-none = (' - ')
+none = ('-')
 
-# caracteristica do plano de ação
-caracteristica = plano[['O que? (What?)','Por que? (Why?)','Onde? (Where?)','Quando? (When?)','Quem? (Who?)','Como? (How?)','Quanto custa? (How much?)']]
+# caracteristica do material
+caracteristica = ensaio_laboratorio[['Resistencia', 'Traço - carrinho']]
 
-# salvar o DataFrame 'caracteristica' como um arquivo CSV
-caracteristica.to_csv('caracteristica.csv', index=False)
-print(caracteristica)
+# criar gráfico de dispersão
+caracteristica.plot(kind='scatter', x='Resistencia', y='Traço - carrinho')
+plt.show()
 
 
 # enviar um email com o relatório
@@ -30,9 +31,10 @@ mail.HTMLBody = f'''
 
 <p>Caracteristicas da aplicação do material:</p>
 {caracteristica.to_html()}
+{caracteristica.plot_html()}
 
 <p>Qualquer dúvida estou a disposição.</p>
-<p>Marcos Vinicius da Silva, Equipe técnica Grupo Ladeia Att.,</p>
+<p>Marcos Vinicius da Silva, Equipe técnica Grupo x Att.,</p>
 <p></p>
 '''
 mail.Send()
